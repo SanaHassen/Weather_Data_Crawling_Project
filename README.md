@@ -1,5 +1,6 @@
 # Weather Data Crawling Project
-This project aims to crawl weather data from the OpenWeather API https://openweathermap.org/for cities in France and store the retrieved data in a Cassandra database.........................
+This project aims to crawl weather data from the OpenWeather API https://openweathermap.org for cities in France and store the retrieved data in a Cassandra database. An API is also here to enable us to retrieve weather information from the database.
+
 It implements the pipeline shown below:
 
 ![HomeView](images/architecture.PNG)
