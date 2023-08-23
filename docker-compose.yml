@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  crawler:
+    build: 
+      context: ./crawler
+      dockerfile: Dockerfile
+    networks:
+      - db_network
+    depends_on:
+      cassandra:
+        condition: service_healthy
+
+  api:
+    build: 
+      context: ./flask-api
+      dockerfile: Dockerfile
+    networks:
+      - db_network
+    ports:
+      - "8080:8080"
+    depends_on:
+      crawler:
+        condition: service_completed_successfully
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    networks:
+      - db_network
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+networks:
+  db_network:
